@@ -16,6 +16,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
     var contentView : UIView = UIView()
     var label : UILabel = UILabel()
     var textField : UITextField = UITextField()
+	let defaultMessage = "Hello, Swift!"
 
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,14 +30,18 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
         scrollView.addSubview(contentView)
     
         label.setTranslatesAutoresizingMaskIntoConstraints(false)
-        label.text = "View Should Be Red"
+        label.text = defaultMessage
         label.sizeToFit()
+		label.numberOfLines = 0
+		label.textAlignment = NSTextAlignment.Center
 		
 		textField.setTranslatesAutoresizingMaskIntoConstraints(false)
 		textField.sizeToFit()
 		textField.borderStyle = UITextBorderStyle.RoundedRect
 		textField.delegate = self
-		
+		textField.clearButtonMode = UITextFieldViewMode.WhileEditing
+		textField.placeholder = "Enter your message"
+
         contentView.addSubview(label)
 		contentView.addSubview(textField)
 
@@ -73,11 +78,22 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
         let topLayoutHeight = self.topLayoutGuide.length
         let topInset = topLayoutHeight + layoutInset
 
+		label.setContentHuggingPriority(752, forAxis: UILayoutConstraintAxis.Horizontal)
+		
 		var labelTop = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: topInset)
         contentView.addConstraint(labelTop)
         
         var labelCenter = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
+		labelCenter.priority = 1000
         contentView.addConstraint(labelCenter)
+		
+		var labelLeft = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: contentView, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: layoutInset)
+		labelLeft.priority = 751
+		contentView.addConstraint(labelLeft)
+
+		var labelRight = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: contentView, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: -layoutInset)
+		labelRight.priority = 751
+		contentView.addConstraint(labelRight)
 
 		var textFieldLeft = NSLayoutConstraint(item: textField, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: layoutInset)
 		contentView.addConstraint(textFieldLeft)
@@ -111,6 +127,22 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		
 		let userInfo = notification.userInfo
 		
+		let frameBegin : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameBeginUserInfoKey)
+		let frameEnd : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameEndUserInfoKey)
+		let animationDuration : (AnyObject!) = userInfo.objectForKey(UIKeyboardAnimationDurationUserInfoKey)
+		let animationCurve : (AnyObject!) = userInfo.objectForKey(UIKeyboardAnimationCurveUserInfoKey)
+		
+		let beginFrame = frameBegin.CGRectValue()
+		let endFame = frameEnd.CGRectValue()
+		let duration = animationDuration.floatValue
+		let curve = animationCurve.integerValue
+		
+		let deltaHeight = beginFrame.origin.y - endFame.origin.y
+		
+		let newFrame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height - deltaHeight)
+
+		UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.scrollView.frame = newFrame }, completion: nil)
+
 	}
 	
 	func keyboardDidShow(notification: NSNotification) {
@@ -123,6 +155,22 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 
 		let userInfo = notification.userInfo
 
+		let frameBegin : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameBeginUserInfoKey)
+		let frameEnd : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameEndUserInfoKey)
+		let animationDuration : (AnyObject!) = userInfo.objectForKey(UIKeyboardAnimationDurationUserInfoKey)
+		let animationCurve : (AnyObject!) = userInfo.objectForKey(UIKeyboardAnimationCurveUserInfoKey)
+		
+		let beginFrame = frameBegin.CGRectValue()
+		let endFame = frameEnd.CGRectValue()
+		let duration = animationDuration.floatValue
+		let curve = animationCurve.integerValue
+		
+		let deltaHeight = beginFrame.origin.y - endFame.origin.y
+		
+		let newFrame = self.view.frame
+		
+		UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.scrollView.frame = newFrame }, completion: nil)
+
 	}
 	
 	func keyboardDidHide(notification: NSNotification) {
@@ -130,5 +178,26 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		let userInfo = notification.userInfo
 
 	}
+	
+	func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+		
+		if let message = textField.text {
+			label.text = message
+		} else {
+			label.text = defaultMessage
+		}
+
+		label.sizeToFit()
+		contentView.setNeedsLayout()
+		contentView.layoutIfNeeded()
+		
+		return true
+	}
+	
+	func textFieldShouldReturn(textField: UITextField) -> Bool {
+		textField.resignFirstResponder()
+		return true
+	}
+	
 }
 
