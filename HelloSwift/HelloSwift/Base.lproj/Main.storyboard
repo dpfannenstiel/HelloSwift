@@ -44,6 +44,7 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="rPf-AW-2hx" secondAttribute="bottom" constant="20" id="lZT-aJ-bgA"/>
                             <constraint firstAttribute="trailing" secondItem="rPf-AW-2hx" secondAttribute="trailing" constant="20" id="mKX-iA-lhf"/>
                         </constraints>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
