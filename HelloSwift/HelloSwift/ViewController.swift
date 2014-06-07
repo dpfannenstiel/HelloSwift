@@ -10,15 +10,20 @@ import UIKit
 
 
 
-class ViewController: UIViewController, UIScrollViewDelegate {
+class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
                             
     @IBOutlet var scrollView : UIScrollView = nil
     var contentView : UIView = UIView()
     var label : UILabel = UILabel()
     var textField : UITextField = UITextField()
-    
-    override func viewDidLoad() {
+
+	override func viewDidLoad() {
         super.viewDidLoad()
+
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardDidHideNotification, object: nil)
 
         contentView.backgroundColor = UIColor.redColor()
         scrollView.addSubview(contentView)
@@ -29,7 +34,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
 		
 		textField.setTranslatesAutoresizingMaskIntoConstraints(false)
 		textField.sizeToFit()
-		textField.backgroundColor = UIColor.cyanColor()
+		textField.borderStyle = UITextBorderStyle.RoundedRect
+		textField.delegate = self
 		
         contentView.addSubview(label)
 		contentView.addSubview(textField)
@@ -40,6 +46,12 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         
     }
 
+	override func viewWillUnload()  {
+		
+		NSNotificationCenter.defaultCenter().removeObserver(self)
+		
+	}
+	
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -67,11 +79,11 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         var labelCenter = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
         contentView.addConstraint(labelCenter)
 
-		var textFieldLeading = NSLayoutConstraint(item: textField, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: layoutInset)
-		contentView.addConstraint(textFieldLeading)
+		var textFieldLeft = NSLayoutConstraint(item: textField, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: layoutInset)
+		contentView.addConstraint(textFieldLeft)
 
-		var textFieldTrailing = NSLayoutConstraint(item: textField, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: layoutInset)
-		contentView.addConstraint(textFieldTrailing)
+		var textFieldRight = NSLayoutConstraint(item: textField, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: -layoutInset)
+		contentView.addConstraint(textFieldRight)
 
 		var textFieldBottom = NSLayoutConstraint(item: textField, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: -20)
 		contentView.addConstraint(textFieldBottom)
@@ -86,9 +98,37 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         
         contentView.frame = scrollView.bounds
         scrollView.contentSize = contentView.bounds.size
-
+		contentView.setNeedsLayout()
+		contentView.layoutIfNeeded()
+		
+		println(textField)
+		
         super.viewDidLayoutSubviews()
         
     }
+	
+	func keyboardWillShow(notification: NSNotification) {
+		
+		let userInfo = notification.userInfo
+		
+	}
+	
+	func keyboardDidShow(notification: NSNotification) {
+
+		let userInfo = notification.userInfo
+
+	}
+	
+	func keyboardWillHide(notification: NSNotification) {
+
+		let userInfo = notification.userInfo
+
+	}
+	
+	func keyboardDidHide(notification: NSNotification) {
+
+		let userInfo = notification.userInfo
+
+	}
 }
 
