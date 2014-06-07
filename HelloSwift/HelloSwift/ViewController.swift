@@ -26,11 +26,11 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardDidHideNotification, object: nil)
 
-        contentView.backgroundColor = UIColor.redColor()
+        contentView.backgroundColor = UIColor.clearColor()
         scrollView.addSubview(contentView)
     
         label.setTranslatesAutoresizingMaskIntoConstraints(false)
-        label.text = defaultMessage
+        label.attributedText = self.letterPressedString(defaultMessage)
         label.sizeToFit()
 		label.numberOfLines = 0
 		label.textAlignment = NSTextAlignment.Center
@@ -42,12 +42,12 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		textField.clearButtonMode = UITextFieldViewMode.WhileEditing
 		textField.placeholder = "Enter your message"
 
-        contentView.addSubview(label)
+        self.view.addSubview(label)
 		contentView.addSubview(textField)
 
 		contentView.frame = scrollView.bounds
         scrollView.contentSize = contentView.bounds.size;
-        scrollView.backgroundColor = UIColor.yellowColor()
+        scrollView.backgroundColor = UIColor.clearColor()
         
     }
 
@@ -80,20 +80,20 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 
 		label.setContentHuggingPriority(752, forAxis: UILayoutConstraintAxis.Horizontal)
 		
-		var labelTop = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: topInset)
-        contentView.addConstraint(labelTop)
+		var labelTop = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: topInset)
+        self.view.addConstraint(labelTop)
         
-        var labelCenter = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
+        var labelCenter = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
 		labelCenter.priority = 1000
-        contentView.addConstraint(labelCenter)
+        self.view.addConstraint(labelCenter)
 		
-		var labelLeft = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: contentView, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: layoutInset)
+		var labelLeft = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: self.view, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: layoutInset)
 		labelLeft.priority = 751
-		contentView.addConstraint(labelLeft)
+		self.view.addConstraint(labelLeft)
 
-		var labelRight = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: contentView, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: -layoutInset)
+		var labelRight = NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: self.view, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: -layoutInset)
 		labelRight.priority = 751
-		contentView.addConstraint(labelRight)
+		self.view.addConstraint(labelRight)
 
 		var textFieldLeft = NSLayoutConstraint(item: textField, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: layoutInset)
 		contentView.addConstraint(textFieldLeft)
@@ -182,9 +182,9 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 	func textFieldShouldEndEditing(textField: UITextField) -> Bool {
 		
 		if let message = textField.text {
-			label.text = message
+			label.attributedText = self.letterPressedString(message)
 		} else {
-			label.text = defaultMessage
+			label.attributedText = self.letterPressedString(defaultMessage)
 		}
 
 		label.sizeToFit()
@@ -199,5 +199,16 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		return true
 	}
 	
+	func letterPressedString(originalString: NSString) -> NSAttributedString {
+
+		var attributes = NSMutableDictionary()
+		
+		attributes.setValue(NSTextEffectLetterpressStyle, forKey:  NSTextEffectAttributeName)
+		attributes.setValue(UIColor.darkGrayColor(), forKey: NSForegroundColorAttributeName)
+		
+		var attributedString = NSAttributedString(string: originalString, attributes: attributes)
+		return attributedString
+		
+	}
 }
 
