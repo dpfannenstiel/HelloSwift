@@ -28,16 +28,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="fdQ-pR-C4h" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="9de-ZG-Szx"/>
                             <constraint firstAttribute="trailing" secondItem="Yom-4o-UdK" secondAttribute="trailing" id="B3g-If-tIk"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fdQ-pR-C4h" secondAttribute="bottom" id="BOm-Zr-VyR"/>
                             <constraint firstItem="Yom-4o-UdK" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="E2y-dT-r58"/>
                             <constraint firstAttribute="centerX" secondItem="fdQ-pR-C4h" secondAttribute="centerX" id="MmQ-O1-WFe"/>
+                            <constraint firstItem="fdQ-pR-C4h" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="W4f-38-iPk"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Yom-4o-UdK" secondAttribute="bottom" id="Xaz-Hr-GtU"/>
                             <constraint firstAttribute="centerY" secondItem="fdQ-pR-C4h" secondAttribute="centerY" id="aZI-se-ZiP"/>
                             <constraint firstAttribute="trailing" secondItem="fdQ-pR-C4h" secondAttribute="trailing" id="bRR-ce-oto"/>
                             <constraint firstItem="fdQ-pR-C4h" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="cAj-GS-sOx"/>
                             <constraint firstItem="Yom-4o-UdK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="quB-Zd-piZ"/>
+                            <constraint firstItem="fdQ-pR-C4h" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="xtn-sn-dcd"/>
                         </constraints>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
