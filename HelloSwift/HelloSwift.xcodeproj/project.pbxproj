@@ -12,7 +12,6 @@
 		DAC07CEE1942A1E6000842D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAC07CEC1942A1E6000842D6 /* Main.storyboard */; };
 		DAC07CF01942A1E6000842D6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAC07CEF1942A1E6000842D6 /* Images.xcassets */; };
 		DAC07CFC1942A1E6000842D6 /* HelloSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC07CFB1942A1E6000842D6 /* HelloSwiftTests.swift */; };
-		DAC07D071942B6DB000842D6 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC07D061942B6DB000842D6 /* UIView+Autolayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +35,6 @@
 		DAC07CFA1942A1E6000842D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAC07CFB1942A1E6000842D6 /* HelloSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloSwiftTests.swift; sourceTree = "<group>"; };
 		DAC07D051942A634000842D6 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
-		DAC07D061942B6DB000842D6 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +79,6 @@
 			children = (
 				DAC07CE81942A1E6000842D6 /* AppDelegate.swift */,
 				DAC07CEA1942A1E6000842D6 /* ViewController.swift */,
-				DAC07D061942B6DB000842D6 /* UIView+Autolayout.swift */,
 				DAC07CEC1942A1E6000842D6 /* Main.storyboard */,
 				DAC07D051942A634000842D6 /* MyPlayground.playground */,
 				DAC07CEF1942A1E6000842D6 /* Images.xcassets */,
@@ -215,7 +212,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAC07CEB1942A1E6000842D6 /* ViewController.swift in Sources */,
-				DAC07D071942B6DB000842D6 /* UIView+Autolayout.swift in Sources */,
 				DAC07CE91942A1E6000842D6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -406,6 +402,7 @@
 				DAC07D011942A1E6000842D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DAC07D021942A1E6000842D6 /* Build configuration list for PBXNativeTarget "HelloSwiftTests" */ = {
 			isa = XCConfigurationList;
@@ -414,6 +411,7 @@
 				DAC07D041942A1E6000842D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

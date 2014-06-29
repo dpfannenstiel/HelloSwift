@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6154.17" systemVersion="14A238x" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6154.17" systemVersion="14A261i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6153.11"/>
     </dependencies>
@@ -28,11 +28,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fdQ-pR-C4h" secondAttribute="bottom" id="9Y7-HH-BGb"/>
+                            <constraint firstItem="fdQ-pR-C4h" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="9de-ZG-Szx"/>
                             <constraint firstAttribute="trailing" secondItem="Yom-4o-UdK" secondAttribute="trailing" id="B3g-If-tIk"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fdQ-pR-C4h" secondAttribute="bottom" id="BOm-Zr-VyR"/>
                             <constraint firstItem="Yom-4o-UdK" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="E2y-dT-r58"/>
                             <constraint firstAttribute="centerX" secondItem="fdQ-pR-C4h" secondAttribute="centerX" id="MmQ-O1-WFe"/>
-                            <constraint firstItem="fdQ-pR-C4h" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="UtM-F0-OIX"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Yom-4o-UdK" secondAttribute="bottom" id="Xaz-Hr-GtU"/>
                             <constraint firstAttribute="centerY" secondItem="fdQ-pR-C4h" secondAttribute="centerY" id="aZI-se-ZiP"/>
                             <constraint firstAttribute="trailing" secondItem="fdQ-pR-C4h" secondAttribute="trailing" id="bRR-ce-oto"/>
@@ -41,6 +41,8 @@
                         </constraints>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="480" height="480"/>
                     <connections>
                         <outlet property="scrollView" destination="Yom-4o-UdK" id="sIB-k9-6z4"/>
                     </connections>

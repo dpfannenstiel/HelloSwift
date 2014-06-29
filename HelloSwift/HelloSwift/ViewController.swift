@@ -116,10 +116,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
         scrollView.contentSize = contentView.bounds.size
 		contentView.setNeedsLayout()
 		contentView.layoutIfNeeded()
-		
-		println(textField)
-		
-        super.viewDidLayoutSubviews()
+
+		super.viewDidLayoutSubviews()
         
     }
 	
