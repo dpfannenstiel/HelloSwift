@@ -12,7 +12,7 @@ import UIKit
 
 class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
                             
-    @IBOutlet var scrollView : UIScrollView = nil
+    @IBOutlet var scrollView : UIScrollView!
     var contentView : UIView = UIView()
     var label : UILabel = UILabel()
     var textField : UITextField = UITextField()
@@ -20,11 +20,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
 
         contentView.backgroundColor = UIColor.clearColor()
         scrollView.addSubview(contentView)
@@ -51,14 +46,19 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
         
     }
 
-	override func viewWillUnload()  {
-		
+	override func viewWillDisappear(animated: Bool) {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
-		
+		super.viewWillDisappear(animated)
 	}
 	
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+		
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
+
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -123,7 +123,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 	
 	func keyboardWillShow(notification: NSNotification) {
 		
-		let userInfo = notification.userInfo
+		let userInfo = notification.userInfo as NSDictionary
 		
 		let frameBegin : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameBeginUserInfoKey)
 		let frameEnd : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameEndUserInfoKey)
@@ -151,7 +151,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 	
 	func keyboardWillHide(notification: NSNotification) {
 
-		let userInfo = notification.userInfo
+		let userInfo = notification.userInfo as NSDictionary
 
 		let frameBegin : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameBeginUserInfoKey)
 		let frameEnd : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameEndUserInfoKey)
