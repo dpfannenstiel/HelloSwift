@@ -119,16 +119,26 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
         
     }
 	
+	func keyboardFrameInformation(infoDict: [NSObject: AnyObject]?) -> (frameBegin: NSValue, frameEnd: NSValue) {
+
+		let frameBegin : (NSValue!) = infoDict?[UIKeyboardFrameBeginUserInfoKey] as NSValue
+		let frameEnd : (NSValue!) = infoDict?[UIKeyboardFrameEndUserInfoKey] as NSValue
+
+		return (frameBegin, frameEnd);
+	}
+	
+	func keyboardAnimationInformation(infoDict: [NSObject: AnyObject]?) -> (animationDurationNumber: NSNumber, animationCurveNumber: NSNumber) {
+		
+		let animationDurationNumber : (NSNumber!) = infoDict?[UIKeyboardAnimationDurationUserInfoKey] as NSNumber
+		let animationCurveNumber : (NSNumber!) = infoDict?[UIKeyboardAnimationCurveUserInfoKey] as NSNumber
+
+		return (animationDurationNumber, animationCurveNumber)
+	}
+	
 	func keyboardWillShow(notification: NSNotification) {
-		
-		let userInfo = notification.userInfo?
-		
-		println(userInfo)
-		
-		let frameBegin : (NSValue!) = userInfo?[UIKeyboardFrameBeginUserInfoKey] as NSValue
-		let frameEnd : (NSValue!) = userInfo?[UIKeyboardFrameEndUserInfoKey] as NSValue
-		let animationDurationNumber : (NSNumber!) = userInfo?[UIKeyboardAnimationDurationUserInfoKey] as NSNumber
-		let animationCurveNumber : (NSNumber!) = userInfo?[UIKeyboardAnimationCurveUserInfoKey] as NSNumber
+
+		let (frameBegin, frameEnd) = self.keyboardFrameInformation(notification.userInfo);
+		let (animationDurationNumber, animationCurveNumber) = self.keyboardAnimationInformation(notification.userInfo)
 		
 		let beginFrame = frameBegin.CGRectValue()
 		let endFame = frameEnd.CGRectValue()
@@ -139,14 +149,14 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		let curve = UIViewAnimationOptions(curveUInt)
 		let sample = UIViewAnimationOptions.CurveEaseInOut
 		let notEaseInOut = UIViewAnimationOptions.CurveEaseIn
-		
-		println("curve \(curve)")
-		println("sample \(sample)")
-		println("notEaseIn \(notEaseInOut)")
-		
+
 		let deltaHeight = beginFrame.origin.y - endFame.origin.y
 		let newFrame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height - deltaHeight)
 		
+		println(notification.userInfo)
+		println("curve \(curve)")
+		println("sample \(sample)")
+		println("notEaseIn \(notEaseInOut)")
 		println("deltaHeight \(deltaHeight)")
 		println("newFrame \(newFrame)")
 		
@@ -161,23 +171,13 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 	
 	func keyboardWillHide(notification: NSNotification) {
 
-		let userInfo = notification.userInfo?
-
-		let frameBegin : (AnyObject!) = userInfo?[UIKeyboardFrameBeginUserInfoKey]
-		let frameEnd : (AnyObject!) = userInfo?[UIKeyboardFrameEndUserInfoKey]
-		let animationDuration : (AnyObject!) = userInfo?[UIKeyboardAnimationDurationUserInfoKey]
-		let animationCurve : (AnyObject!) = userInfo?[UIKeyboardAnimationCurveUserInfoKey]
+		let (animationDurationNumber, animationCurveNumber) = self.keyboardAnimationInformation(notification.userInfo)
 		
-		let beginFrame = frameBegin.CGRectValue()
-		let endFame = frameEnd.CGRectValue()
-		let duration = animationDuration.floatValue
-		let curve = animationCurve.integerValue
-		
-		let deltaHeight = beginFrame.origin.y - endFame.origin.y
-		
+		let durationFloat : NSTimeInterval = animationDurationNumber.doubleValue as NSTimeInterval
+		let curve = animationCurveNumber.integerValue
 		let newFrame = self.view.frame
 		
-		UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.scrollView.frame = newFrame }, completion: nil)
+		UIView.animateWithDuration(durationFloat, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.scrollView.frame = newFrame }, completion: nil)
 
 	}
 	
