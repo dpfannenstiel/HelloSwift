@@ -12,7 +12,7 @@ import UIKit
 
 class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
                             
-    @IBOutlet var scrollView : UIScrollView = nil
+    @IBOutlet var scrollView : UIScrollView!
     var contentView : UIView = UIView()
     var label : UILabel = UILabel()
     var textField : UITextField = UITextField()
@@ -20,11 +20,6 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
 
         contentView.backgroundColor = UIColor.clearColor()
         scrollView.addSubview(contentView)
@@ -51,14 +46,17 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
         
     }
 
-	override func viewWillUnload()  {
-		
+	override func viewWillDisappear(animated: Bool) {
 		NSNotificationCenter.defaultCenter().removeObserver(self)
-		
+		super.viewWillDisappear(animated)
 	}
 	
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -123,24 +121,36 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 	
 	func keyboardWillShow(notification: NSNotification) {
 		
-		let userInfo = notification.userInfo
+		let userInfo = notification.userInfo?
 		
-		let frameBegin : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameBeginUserInfoKey)
-		let frameEnd : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameEndUserInfoKey)
-		let animationDuration : (AnyObject!) = userInfo.objectForKey(UIKeyboardAnimationDurationUserInfoKey)
-		let animationCurve : (AnyObject!) = userInfo.objectForKey(UIKeyboardAnimationCurveUserInfoKey)
+		println(userInfo)
+		
+		let frameBegin : (NSValue!) = userInfo?[UIKeyboardFrameBeginUserInfoKey] as NSValue
+		let frameEnd : (NSValue!) = userInfo?[UIKeyboardFrameEndUserInfoKey] as NSValue
+		let animationDurationNumber : (NSNumber!) = userInfo?[UIKeyboardAnimationDurationUserInfoKey] as NSNumber
+		let animationCurveNumber : (NSNumber!) = userInfo?[UIKeyboardAnimationCurveUserInfoKey] as NSNumber
 		
 		let beginFrame = frameBegin.CGRectValue()
 		let endFame = frameEnd.CGRectValue()
-		let duration = animationDuration.floatValue
-		let curve = animationCurve.integerValue
+		let durationFloat : NSTimeInterval = animationDurationNumber.doubleValue as NSTimeInterval
+		
+		let curveUInt : UInt = (UInt)(animationCurveNumber.integerValue)
+
+		let curve = UIViewAnimationOptions(curveUInt)
+		let sample = UIViewAnimationOptions.CurveEaseInOut
+		let notEaseInOut = UIViewAnimationOptions.CurveEaseIn
+		
+		println("curve \(curve)")
+		println("sample \(sample)")
+		println("notEaseIn \(notEaseInOut)")
 		
 		let deltaHeight = beginFrame.origin.y - endFame.origin.y
-		
 		let newFrame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height - deltaHeight)
-
-		UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.scrollView.frame = newFrame }, completion: nil)
-
+		
+		println("deltaHeight \(deltaHeight)")
+		println("newFrame \(newFrame)")
+		
+		UIView.animateWithDuration(durationFloat, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.scrollView.frame = newFrame }, completion: nil)
 	}
 	
 	func keyboardDidShow(notification: NSNotification) {
@@ -151,12 +161,12 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 	
 	func keyboardWillHide(notification: NSNotification) {
 
-		let userInfo = notification.userInfo
+		let userInfo = notification.userInfo?
 
-		let frameBegin : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameBeginUserInfoKey)
-		let frameEnd : (AnyObject!) = userInfo.objectForKey(UIKeyboardFrameEndUserInfoKey)
-		let animationDuration : (AnyObject!) = userInfo.objectForKey(UIKeyboardAnimationDurationUserInfoKey)
-		let animationCurve : (AnyObject!) = userInfo.objectForKey(UIKeyboardAnimationCurveUserInfoKey)
+		let frameBegin : (AnyObject!) = userInfo?[UIKeyboardFrameBeginUserInfoKey]
+		let frameEnd : (AnyObject!) = userInfo?[UIKeyboardFrameEndUserInfoKey]
+		let animationDuration : (AnyObject!) = userInfo?[UIKeyboardAnimationDurationUserInfoKey]
+		let animationCurve : (AnyObject!) = userInfo?[UIKeyboardAnimationCurveUserInfoKey]
 		
 		let beginFrame = frameBegin.CGRectValue()
 		let endFame = frameEnd.CGRectValue()
