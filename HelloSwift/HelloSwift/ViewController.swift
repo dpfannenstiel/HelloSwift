@@ -139,28 +139,31 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 
 		let (frameBegin, frameEnd) = self.keyboardFrameInformation(notification.userInfo);
 		let (animationDurationNumber, animationCurveNumber) = self.keyboardAnimationInformation(notification.userInfo)
-		
+
 		let beginFrame = frameBegin.CGRectValue()
 		let endFame = frameEnd.CGRectValue()
 		let durationFloat : NSTimeInterval = animationDurationNumber.doubleValue as NSTimeInterval
 		
-		let curveUInt : UInt = (UInt)(animationCurveNumber.integerValue)
+		let curveUInt : UInt = ((UInt)(animationCurveNumber.unsignedIntegerValue)) << 16
 
-		let curve = UIViewAnimationOptions(curveUInt)
+		let curve = UIViewAnimationOptions.fromRaw(curveUInt)!
 		let sample = UIViewAnimationOptions.CurveEaseInOut
 		let notEaseInOut = UIViewAnimationOptions.CurveEaseIn
 
-		let deltaHeight = beginFrame.origin.y - endFame.origin.y
-		let newFrame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height - deltaHeight)
-		
+		let newFrame = CGRectMake(0, 0, scrollView.frame.size.width, endFame.origin.y)
+
+		/*
 		println(notification.userInfo)
 		println("curve \(curve)")
 		println("sample \(sample)")
 		println("notEaseIn \(notEaseInOut)")
 		println("deltaHeight \(deltaHeight)")
 		println("newFrame \(newFrame)")
+		println("durationFloat \(durationFloat)")
+		*/
 		
 		UIView.animateWithDuration(durationFloat, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.scrollView.frame = newFrame }, completion: nil)
+		
 	}
 	
 	func keyboardDidShow(notification: NSNotification) {
