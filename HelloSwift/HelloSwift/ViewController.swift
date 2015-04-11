@@ -144,25 +144,12 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		let endFame = frameEnd.CGRectValue()
 		let durationFloat : NSTimeInterval = animationDurationNumber.doubleValue as NSTimeInterval
 		
-		let curveUInt : UInt = ((UInt)(animationCurveNumber.unsignedIntegerValue)) << 16
-
-		let curve = UIViewAnimationOptions(curveUInt)
-		let sample = UIViewAnimationOptions.CurveEaseInOut
-		let notEaseInOut = UIViewAnimationOptions.CurveEaseIn
+		let viewCurve = UIViewAnimationCurve(rawValue: animationCurveNumber.integerValue)
+		let curve = UIViewAnimationOptions(animationCurve: viewCurve!)
 
 		let newFrame = CGRectMake(0, 0, scrollView.frame.size.width, endFame.origin.y)
 
-		/*
-		println(notification.userInfo)
-		println("curve \(curve)")
-		println("sample \(sample)")
-		println("notEaseIn \(notEaseInOut)")
-		println("deltaHeight \(deltaHeight)")
-		println("newFrame \(newFrame)")
-		println("durationFloat \(durationFloat)")
-		*/
-		
-		UIView.animateWithDuration(durationFloat, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.scrollView.frame = newFrame }, completion: nil)
+		UIView.animateWithDuration(durationFloat, delay: 0.0, options: curve, animations: { self.scrollView.frame = newFrame }, completion: nil)
 		
 	}
 	
@@ -223,3 +210,19 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 	}
 }
 
+extension UIViewAnimationOptions {
+	
+	init(animationCurve:UIViewAnimationCurve) {
+		switch animationCurve {
+		case .EaseInOut:
+			self = UIViewAnimationOptions(0 << 16)
+		case .EaseIn:
+			self = UIViewAnimationOptions(1 << 16)
+		case .EaseOut:
+			self = UIViewAnimationOptions(2 << 16)
+		case .Linear:
+			self = UIViewAnimationOptions(3 << 16)
+		}
+	}
+	
+}
