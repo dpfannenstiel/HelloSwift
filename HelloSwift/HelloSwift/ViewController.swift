@@ -121,16 +121,16 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 	
 	func keyboardFrameInformation(infoDict: [NSObject: AnyObject]?) -> (frameBegin: NSValue, frameEnd: NSValue) {
 
-		let frameBegin : (NSValue!) = infoDict?[UIKeyboardFrameBeginUserInfoKey] as NSValue
-		let frameEnd : (NSValue!) = infoDict?[UIKeyboardFrameEndUserInfoKey] as NSValue
+		let frameBegin : (NSValue!) = infoDict?[UIKeyboardFrameBeginUserInfoKey] as! NSValue
+		let frameEnd : (NSValue!) = infoDict?[UIKeyboardFrameEndUserInfoKey] as! NSValue
 
 		return (frameBegin, frameEnd);
 	}
 	
 	func keyboardAnimationInformation(infoDict: [NSObject: AnyObject]?) -> (animationDurationNumber: NSNumber, animationCurveNumber: NSNumber) {
 		
-		let animationDurationNumber : (NSNumber!) = infoDict?[UIKeyboardAnimationDurationUserInfoKey] as NSNumber
-		let animationCurveNumber : (NSNumber!) = infoDict?[UIKeyboardAnimationCurveUserInfoKey] as NSNumber
+		let animationDurationNumber : (NSNumber!) = infoDict?[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
+		let animationCurveNumber : (NSNumber!) = infoDict?[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber
 
 		return (animationDurationNumber, animationCurveNumber)
 	}
@@ -146,7 +146,7 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		
 		let curveUInt : UInt = ((UInt)(animationCurveNumber.unsignedIntegerValue)) << 16
 
-		let curve = UIViewAnimationOptions.fromRaw(curveUInt)!
+		let curve = UIViewAnimationOptions(curveUInt)
 		let sample = UIViewAnimationOptions.CurveEaseInOut
 		let notEaseInOut = UIViewAnimationOptions.CurveEaseIn
 
@@ -210,13 +210,13 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		return true
 	}
 	
-	func letterPressedString(originalString: NSString) -> NSAttributedString {
+	func letterPressedString(originalString: String) -> NSAttributedString {
 
-		var attributes = NSMutableDictionary()
+		var attributes = [NSObject:AnyObject]()
 		
-		attributes.setValue(NSTextEffectLetterpressStyle, forKey:  NSTextEffectAttributeName)
-		attributes.setValue(UIColor.darkGrayColor(), forKey: NSForegroundColorAttributeName)
-		
+		attributes[NSTextEffectAttributeName] = NSTextEffectLetterpressStyle
+		attributes[NSForegroundColorAttributeName] = UIColor.darkGrayColor()
+
 		var attributedString = NSAttributedString(string: originalString, attributes: attributes)
 		return attributedString
 		
