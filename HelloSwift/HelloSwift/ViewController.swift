@@ -215,13 +215,13 @@ extension UIViewAnimationOptions {
 	init(animationCurve:UIViewAnimationCurve) {
 		switch animationCurve {
 		case .EaseInOut:
-			self = UIViewAnimationOptions(0 << 16)
+			self = UIViewAnimationOptions.CurveEaseInOut
 		case .EaseIn:
-			self = UIViewAnimationOptions(1 << 16)
+			self = UIViewAnimationOptions.CurveEaseIn
 		case .EaseOut:
-			self = UIViewAnimationOptions(2 << 16)
+			self = UIViewAnimationOptions.CurveEaseOut
 		case .Linear:
-			self = UIViewAnimationOptions(3 << 16)
+			self = UIViewAnimationOptions.CurveLinear
 		}
 	}
 	
