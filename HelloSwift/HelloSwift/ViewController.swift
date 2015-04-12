@@ -144,12 +144,13 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		let endFame = frameEnd.CGRectValue()
 		let durationFloat : NSTimeInterval = animationDurationNumber.doubleValue as NSTimeInterval
 		
-		let viewCurve = UIViewAnimationCurve(rawValue: animationCurveNumber.integerValue)
-		let curve = UIViewAnimationOptions(animationCurve: viewCurve!)
+		let curve = UIViewAnimationCurve(rawValue: animationCurveNumber.integerValue)!
+		let viewOptions = UIViewAnimationOptions(animationCurve: curve)
 
-		let newFrame = CGRectMake(0, 0, scrollView.frame.size.width, endFame.origin.y)
-
-		UIView.animateWithDuration(durationFloat, delay: 0.0, options: curve, animations: { self.scrollView.frame = newFrame }, completion: nil)
+		let offsetY = -endFame.origin.y
+		let contentOffset = CGPointMake(0, offsetY)
+		
+		UIView.animateWithDuration(durationFloat, delay: 0.0, options: viewOptions, animations: { self.scrollView.contentOffset = contentOffset }, completion: nil)
 		
 	}
 	
@@ -164,10 +165,10 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		let (animationDurationNumber, animationCurveNumber) = self.keyboardAnimationInformation(notification.userInfo)
 		
 		let durationFloat : NSTimeInterval = animationDurationNumber.doubleValue as NSTimeInterval
-		let curve = animationCurveNumber.integerValue
-		let newFrame = self.view.frame
+		let curve = UIViewAnimationCurve(rawValue: animationCurveNumber.integerValue)!
+		let viewOptions = UIViewAnimationOptions(animationCurve: curve)
 		
-		UIView.animateWithDuration(durationFloat, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.scrollView.frame = newFrame }, completion: nil)
+		UIView.animateWithDuration(durationFloat, delay: 0.0, options: viewOptions, animations: { self.scrollView.contentOffset = CGPointZero }, completion: nil)
 
 	}
 	
