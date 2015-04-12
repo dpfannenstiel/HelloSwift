@@ -13,6 +13,7 @@ import UIKit
 class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
                             
     @IBOutlet var scrollView : UIScrollView!
+	@IBOutlet weak var scrollViewBottmonConstraint: NSLayoutConstraint!
     var contentView : UIView = UIView()
     var label : UILabel = UILabel()
     var textField : UITextField = UITextField()
@@ -69,10 +70,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
     }
 
     override func updateViewConstraints() {
-        
-        super.updateViewConstraints()
-        
-        let layoutInset : CGFloat = 20.0
+
+		let layoutInset : CGFloat = 20.0
         let topLayoutHeight = self.topLayoutGuide.length
         let topInset = topLayoutHeight + layoutInset
 
@@ -147,9 +146,11 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		let viewCurve = UIViewAnimationCurve(rawValue: animationCurveNumber.integerValue)
 		let curve = UIViewAnimationOptions(animationCurve: viewCurve!)
 
-		let newFrame = CGRectMake(0, 0, scrollView.frame.size.width, endFame.origin.y)
-
-		UIView.animateWithDuration(durationFloat, delay: 0.0, options: curve, animations: { self.scrollView.frame = newFrame }, completion: nil)
+		let bottomConstraintValue = CGRectGetHeight(self.view.bounds) - endFame.origin.y
+		self.scrollViewBottmonConstraint.constant = bottomConstraintValue
+		self.scrollView.setNeedsUpdateConstraints()
+		
+		UIView.animateWithDuration(durationFloat, delay: 0.0, options: curve, animations: { self.scrollView.layoutIfNeeded() }, completion: nil)
 		
 	}
 	
@@ -164,10 +165,12 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
 		let (animationDurationNumber, animationCurveNumber) = self.keyboardAnimationInformation(notification.userInfo)
 		
 		let durationFloat : NSTimeInterval = animationDurationNumber.doubleValue as NSTimeInterval
-		let curve = animationCurveNumber.integerValue
-		let newFrame = self.view.frame
+		let viewCurve = UIViewAnimationCurve(rawValue: animationCurveNumber.integerValue)
+		let curve = UIViewAnimationOptions(animationCurve: viewCurve!)
+		self.scrollViewBottmonConstraint.constant = 0.0
+		self.scrollView.setNeedsUpdateConstraints()
 		
-		UIView.animateWithDuration(durationFloat, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { self.scrollView.frame = newFrame }, completion: nil)
+		UIView.animateWithDuration(durationFloat, delay: 0.0, options: curve, animations: { self.scrollView.layoutIfNeeded() }, completion: nil)
 
 	}
 	
@@ -215,13 +218,13 @@ extension UIViewAnimationOptions {
 	init(animationCurve:UIViewAnimationCurve) {
 		switch animationCurve {
 		case .EaseInOut:
-			self = UIViewAnimationOptions(0 << 16)
+			self = UIViewAnimationOptions.CurveEaseInOut
 		case .EaseIn:
-			self = UIViewAnimationOptions(1 << 16)
+			self = UIViewAnimationOptions.CurveEaseIn
 		case .EaseOut:
-			self = UIViewAnimationOptions(2 << 16)
+			self = UIViewAnimationOptions.CurveEaseOut
 		case .Linear:
-			self = UIViewAnimationOptions(3 << 16)
+			self = UIViewAnimationOptions.CurveLinear
 		}
 	}
 	
